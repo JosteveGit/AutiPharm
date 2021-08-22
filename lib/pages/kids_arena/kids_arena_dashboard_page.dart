@@ -1,3 +1,7 @@
+import 'package:auti_pharm/core/constants.dart';
+import 'package:auti_pharm/core/models/user/user_details.dart';
+import 'package:auti_pharm/pages/guardians_arena/view_child_page.dart';
+import 'package:auti_pharm/pages/kids_arena/level/question_page.dart';
 import 'package:auti_pharm/utils/functions/dev_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
@@ -69,20 +73,34 @@ class _KidsArenaDashboardPageState extends State<KidsArenaDashboardPage> {
                           ],
                         ),
                         SizedBox(width: 10),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                pushTo(context, KidDashboardPage());
-                              },
-                              child: ChildImage(),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Josteve A.",
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
+                        ...List.generate(
+                          userDetails.details.children.length,
+                          (index) {
+                            Child child = userDetails.details.children[index];
+                            return Container(
+                              margin: EdgeInsets.only(right: 10),
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      pushTo(
+                                        context,
+                                        QuestionPage(child: child),
+                                      );
+                                    },
+                                    child: ChildImage(),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "${child.firstname} ${child.lastname.substring(0, 1)}.",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),

@@ -1,4 +1,7 @@
+import 'package:auti_pharm/core/constants.dart';
+import 'package:auti_pharm/core/models/user/user_details.dart';
 import 'package:auti_pharm/pages/kids_arena/kids_arena_dashboard_page.dart';
+import 'package:auti_pharm/services/user/user_service.dart';
 import 'package:auti_pharm/utils/functions/dev_utils.dart';
 import 'package:auti_pharm/utils/functions/string_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
@@ -25,129 +28,153 @@ class _GuardiansDashboardPageState extends State<GuardiansDashboardPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         bottom: false,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    width: double.maxFinite,
-                    color: backgroundColor,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Your Children",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Row(
+        child: StreamBuilder<UserDetails>(
+          stream: UserService.getUserDetails(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.maxFinite,
+                        color: backgroundColor,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              children: [
-                                Container(
-                                  height: 105,
-                                  width: 107,
-                                  child: Icon(
-                                    Icons.add_rounded,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: overlayColor,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                  "Add a child",
-                                  style: TextStyle(color: Colors.white),
-                                )
-                              ],
+                            Text(
+                              "Your Children",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(width: 10),
-                            Column(
+                            SizedBox(height: 20),
+                            Row(
                               children: [
-                                GestureDetector(
-                                  onTap: (){
-                                    pushTo(context, ViewChildPage());
-                                  },
-                                  child: ChildImage(),
+                                Column(
+                                  children: [
+                                    Container(
+                                      height: 105,
+                                      width: 107,
+                                      child: Icon(
+                                        Icons.add_rounded,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: overlayColor,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      "Add a child",
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  "Josteve A.",
-                                  style: TextStyle(color: Colors.white),
-                                )
+                                SizedBox(width: 10),
+                                ...List.generate(
+                                  userDetails.details.children.length,
+                                  (index) {
+                                    Child child =
+                                        userDetails.details.children[index];
+                                    return Container(
+                                      margin: EdgeInsets.only(right: 10),
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              pushTo(context, ViewChildPage());
+                                            },
+                                            child: ChildImage(),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "${child.firstname} ${child.lastname.substring(0, 1)}.",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Row(
-                      children: [
-                        DashboardOption(
-                          iconData: Icons.person_rounded,
-                          text: "Profile",
+                      ),
+                      Spacer(),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Row(
+                          children: [
+                            DashboardOption(
+                              iconData: Icons.person_rounded,
+                              text: "Profile",
+                            ),
+                            DashboardOption(
+                              iconData: Icons.settings_rounded,
+                              text: "Settings",
+                            ),
+                          ],
                         ),
-                        DashboardOption(
-                          iconData: Icons.settings_rounded,
-                          text: "Settings",
-                        ),
-                      ],
-                    ),
+                      ),
+                      Spacer(),
+                      Divider(color: Color(0xff95C4D4)),
+                      Spacer(),
+                    ],
                   ),
-                  Spacer(),
-                  Divider(color: Color(0xff95C4D4)),
-                  Spacer(),
-                ],
-              ),
-            ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Kid's Arena",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Kid's Arena",
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            CustomButton(
+                              text: "Enter",
+                              onPressed: () {
+                                pushTo(context, KidsArenaDashboardPage());
+                              },
+                            ),
+                            SizedBox(height: 20),
+                          ],
                         ),
-                        SizedBox(height: 20),
-                        CustomButton(
-                          text: "Enter",
-                          onPressed: () {
-                            pushTo(context, KidsArenaDashboardPage());
-                          },
-                        ),
-                        SizedBox(height: 20),
-                      ],
-                    ),
+                      ),
+                      Image.asset(
+                        pngPath("children"),
+                      ),
+                    ],
                   ),
-                  Image.asset(
-                    pngPath("children"),
-                  ),
-                ],
-              ),
-            )
-          ],
+                )
+              ],
+            );
+          },
         ),
       ),
     );

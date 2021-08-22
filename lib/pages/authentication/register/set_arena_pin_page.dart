@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:auti_pharm/core/constants.dart';
 import 'package:auti_pharm/core/models/authentication_details.dart';
+import 'package:auti_pharm/core/models/user/user_details.dart';
 import 'package:auti_pharm/pages/guardians_arena/guardians_dashboard_page.dart';
 import 'package:auti_pharm/services/authentication/authentication_service.dart';
 import 'package:auti_pharm/utils/functions/dialog_utils.dart';
@@ -81,8 +85,8 @@ class _SetArenaPinPageState extends State<SetArenaPinPage> {
       ));
     } else {
       String uid = rep.userID;
-      // userDetails = UserDetails(uid: uid);
-      // preferences.setString("userDetails", jsonEncode(userDetails.toJson()));
+      userDetails = UserDetails(uid: uid);
+      preferences.setString("userDetails", jsonEncode(userDetails.toJson()));
       pushReplacementTo(context, GuardiansDashboardPage());
     }
   }

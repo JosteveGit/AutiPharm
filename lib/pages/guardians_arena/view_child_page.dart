@@ -1,10 +1,12 @@
+import 'package:auti_pharm/core/models/user/user_details.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
 import 'package:auti_pharm/utils/widgets/child_image.dart';
 import 'package:auti_pharm/utils/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class ViewChildPage extends StatefulWidget {
-  const ViewChildPage({Key key}) : super(key: key);
+  final Child child;
+  const ViewChildPage({Key key, this.child}) : super(key: key);
 
   @override
   _ViewChildPageState createState() => _ViewChildPageState();

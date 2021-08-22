@@ -1,3 +1,4 @@
+import 'package:auti_pharm/core/models/user/user_details.dart';
 import 'package:auti_pharm/utils/functions/dev_utils.dart';
 import 'package:auti_pharm/utils/functions/string_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
@@ -6,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class QuestionPage extends StatefulWidget {
-  const QuestionPage({Key key}) : super(key: key);
+  final Child child;
+  const QuestionPage({Key key, this.child}) : super(key: key);
 
   @override
   _QuestionPageState createState() => _QuestionPageState();
