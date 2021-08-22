@@ -1,3 +1,5 @@
+import 'package:auti_pharm/core/models/authentication_details.dart';
+import 'package:auti_pharm/utils/functions/string_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
 import 'package:auti_pharm/utils/widgets/custom_button.dart';
@@ -7,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'set_arena_pin_page.dart';
 
 class SetPasswordPage extends StatefulWidget {
-  const SetPasswordPage({Key key}) : super(key: key);
+  final RegisterDetails registerDetails;
+  const SetPasswordPage({Key key, this.registerDetails}) : super(key: key);
 
   @override
   _SetPasswordPageState createState() => _SetPasswordPageState();
@@ -46,16 +49,37 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                   children: [
                     CustomTextField(
                       header: "Password",
+                      onChanged: (v) {
+                        setState(() {
+                          password = v;
+                        });
+                      },
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
                       header: "Confirm password",
+                      onChanged: (v) {
+                        setState(() {
+                          confirmPassword = v;
+                        });
+                      },
                     ),
                     SizedBox(height: 20),
                     CustomButton(
                       text: "Next",
+                      validator: () =>
+                          isValidPassword(password) &&
+                          password == confirmPassword,
                       onPressed: () {
-                        pushTo(context, SetArenaPinPage());
+                        RegisterDetails registerDetails =
+                            widget.registerDetails;
+                        registerDetails.password = password;
+                        pushTo(
+                          context,
+                          SetArenaPinPage(
+                            registerDetails: registerDetails,
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -67,4 +91,7 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
       ),
     );
   }
+
+  String password = "";
+  String confirmPassword = "";
 }

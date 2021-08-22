@@ -1,4 +1,7 @@
+import 'package:auti_pharm/core/models/authentication_details.dart';
 import 'package:auti_pharm/pages/guardians_arena/guardians_dashboard_page.dart';
+import 'package:auti_pharm/services/authentication/authentication_service.dart';
+import 'package:auti_pharm/utils/functions/dialog_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
 import 'package:auti_pharm/utils/widgets/characters_entry_fields.dart';
@@ -7,7 +10,8 @@ import 'package:auti_pharm/utils/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class SetArenaPinPage extends StatefulWidget {
-  const SetArenaPinPage({Key key}) : super(key: key);
+  final RegisterDetails registerDetails;
+  const SetArenaPinPage({Key key, this.registerDetails}) : super(key: key);
 
   @override
   _SetArenaPinPageState createState() => _SetArenaPinPageState();
@@ -47,7 +51,10 @@ class _SetArenaPinPageState extends State<SetArenaPinPage> {
                     CharactersEntryFields(
                       numberOfCharacters: 4,
                       onConfirm: (v) {
-                        pushTo(context, GuardiansDashboardPage());
+                        RegisterDetails registerDetails =
+                            widget.registerDetails;
+                        registerDetails.arenaPin = v;
+                        regiser(registerDetails);
                       },
                     ),
                   ],
@@ -58,5 +65,25 @@ class _SetArenaPinPageState extends State<SetArenaPinPage> {
         ),
       ),
     );
+  }
+
+  void regiser(RegisterDetails details) async {
+    showLoader(context);
+    AuthenticationResponse rep = await AuthenticationService.register(details);
+    popLoader();
+    if (rep.authenticationFailed) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          rep.message,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+    } else {
+      String uid = rep.userID;
+      // userDetails = UserDetails(uid: uid);
+      // preferences.setString("userDetails", jsonEncode(userDetails.toJson()));
+      pushReplacementTo(context, GuardiansDashboardPage());
+    }
   }
 }

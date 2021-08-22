@@ -1,8 +1,11 @@
+import 'package:auti_pharm/core/models/authentication_details.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
 import 'package:auti_pharm/utils/widgets/custom_button.dart';
+import 'package:auti_pharm/utils/widgets/custom_drop_down.dart';
 import 'package:auti_pharm/utils/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'register_guardian_page.dart';
 
@@ -47,11 +50,21 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
                     CustomTextField(
                       header: "Child's Firstname ",
                       hint: "e.g. Josteve",
+                      onChanged: (v) {
+                        setState(() {
+                          childsFirstName = v;
+                        });
+                      },
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
                       header: "Child's Lastname ",
                       hint: "e.g. Adekanbi",
+                      onChanged: (v) {
+                        setState(() {
+                          childsLastName = v;
+                        });
+                      },
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -66,6 +79,14 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
                         child: CustomTextField(
                           headerLess: true,
                           hint: "Day",
+                          onChanged: (v) {
+                            setState(() {
+                              day = v;
+                            });
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                          ],
                         ),
                       ),
                       SizedBox(width: 10),
@@ -73,6 +94,14 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
                         child: CustomTextField(
                           headerLess: true,
                           hint: "Month",
+                          onChanged: (v) {
+                            setState(() {
+                              month = v;
+                            });
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                          ],
                         ),
                       ),
                       SizedBox(width: 10),
@@ -80,15 +109,48 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
                         child: CustomTextField(
                           headerLess: true,
                           hint: "Year",
+                          onChanged: (v) {
+                            setState(() {
+                              year = v;
+                            });
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(4),
+                          ],
                         ),
                       ),
                     ]),
                     SizedBox(height: 20),
+                    CustomDropDown(
+                      header: "Select child's level of understanding",
+                      intialValue: null,
+                      onSelected: (v) {
+                        setState(() {
+                          childsLevelOfUnderstanding = v;
+                        });
+                      },
+                      items: levelOfUnderstanding
+                          .map((e) => CustomDropDownItem(value: e, text: e))
+                          .toList(),
+                    ),
+                    SizedBox(height: 20),
                     CustomButton(
                       text: "Next",
                       onPressed: () {
-                        pushTo(context, RegisterGuardianPage());
+                        ChildDetails childDetails = ChildDetails(
+                          dob: childDOB,
+                          firstname: childsFirstName,
+                          lastname: childsLastName,
+                          levelOfUnderstanding: childsLevelOfUnderstanding,
+                        );
+                        pushTo(
+                          context,
+                          RegisterGuardianPage(
+                            initialChildDetails: childDetails,
+                          ),
+                        );
                       },
+                      validator: validator,
                     ),
                   ],
                 ),
@@ -99,4 +161,23 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
       ),
     );
   }
+
+  String day = "";
+  String month = "";
+  String year = "";
+
+  bool validator() {
+    childDOB = "$year/$month/$day";
+    return childsFirstName.isNotEmpty &&
+        childsLastName.isNotEmpty &&
+        childDOB.isNotEmpty &&
+        childsLevelOfUnderstanding.isNotEmpty;
+  }
+
+  String childsFirstName = "";
+  String childsLastName = "";
+  String childDOB = "";
+  String childsLevelOfUnderstanding = "";
+
+  List<String> levelOfUnderstanding = ["Low", "Average", "High"];
 }
