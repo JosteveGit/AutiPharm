@@ -1,14 +1,18 @@
+import 'package:auti_pharm/core/models/user/user_details.dart';
 import 'package:auti_pharm/utils/functions/dev_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
-import 'package:auti_pharm/utils/widgets/child_image.dart';
 import 'package:auti_pharm/utils/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import 'level/question_page.dart';
 
 class KidDashboardPage extends StatefulWidget {
-  const KidDashboardPage({Key key}) : super(key: key);
+  final Child child;
+  const KidDashboardPage({
+    Key key,
+    this.child,
+  }) : super(key: key);
 
   @override
   _KidDashboardPageState createState() => _KidDashboardPageState();
@@ -63,7 +67,10 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                           CustomButton(
                             text: "Start",
                             onPressed: () {
-                              pushTo(context, QuestionPage());
+                              pushTo(
+                                context,
+                                QuestionPage(child: widget.child, type: 1),
+                              );
                             },
                           ),
                         ],
@@ -74,6 +81,7 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                       ),
                     ),
                     Container(
+                      margin: EdgeInsets.only(right: 20),
                       padding: EdgeInsets.all(20),
                       child: Column(
                         children: [
@@ -89,7 +97,42 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                           SizedBox(height: 5),
                           CustomButton(
                             text: "Locked",
-                            onPressed: () {},
+                            onPressed: () {
+                              pushTo(
+                                context,
+                                QuestionPage(child: widget.child, type: 2),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        color: overlayColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Expanded(child: Container()),
+                          Text(
+                            "Level 3",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Bubblegum',
+                              fontSize: 45,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          CustomButton(
+                            text: "Locked",
+                            onPressed: () {
+                              pushTo(
+                                context,
+                                QuestionPage(child: widget.child, type: 3),
+                              );
+                            },
                           ),
                         ],
                       ),

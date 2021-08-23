@@ -11,6 +11,7 @@ import 'package:auti_pharm/utils/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'add_child_page.dart';
 import 'view_child_page.dart';
 
 class GuardiansDashboardPage extends StatefulWidget {
@@ -59,59 +60,67 @@ class _GuardiansDashboardPageState extends State<GuardiansDashboardPage> {
                               ),
                             ),
                             SizedBox(height: 20),
-                            Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Container(
-                                      height: 105,
-                                      width: 107,
-                                      child: Icon(
-                                        Icons.add_rounded,
-                                        color: Colors.white,
-                                        size: 30,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: overlayColor,
-                                        borderRadius: BorderRadius.circular(30),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      "Add a child",
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(width: 10),
-                                ...List.generate(
-                                  userDetails.details.children.length,
-                                  (index) {
-                                    Child child =
-                                        userDetails.details.children[index];
-                                    return Container(
-                                      margin: EdgeInsets.only(right: 10),
-                                      child: Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              pushTo(context, ViewChildPage());
-                                            },
-                                            child: ChildImage(),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
+                                      pushTo(context, AddChildPage());
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 105,
+                                          width: 107,
+                                          child: Icon(
+                                            Icons.add_rounded,
+                                            color: Colors.white,
+                                            size: 30,
                                           ),
-                                          SizedBox(height: 10),
-                                          Text(
-                                            "${child.firstname} ${child.lastname.substring(0, 1)}.",
-                                            style: TextStyle(
-                                              color: Colors.white,
+                                          decoration: BoxDecoration(
+                                            color: overlayColor,
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          "Add a child",
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  ...List.generate(
+                                    userDetails.details.children.length,
+                                    (index) {
+                                      Child child =
+                                          userDetails.details.children[index];
+                                      return Container(
+                                        margin: EdgeInsets.only(right: 10),
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                pushTo(context, ViewChildPage(child: child,));
+                                              },
+                                              child: ChildImage(),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
+                                            SizedBox(height: 10),
+                                            Text(
+                                              "${child.firstname} ${child.lastname.substring(0, 1)}.",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

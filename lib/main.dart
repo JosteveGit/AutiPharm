@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'AutiPharm',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.pink,
       ),
       home: SplashPage(),
     );

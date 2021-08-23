@@ -47,62 +47,65 @@ class _KidsArenaDashboardPageState extends State<KidsArenaDashboardPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              height: 105,
-                              width: 107,
-                              child: Icon(
-                                Icons.add_rounded,
-                                color: Colors.white,
-                                size: 30,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                height: 105,
+                                width: 107,
+                                child: Icon(
+                                  Icons.add_rounded,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: overlayColor,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
                               ),
-                              decoration: BoxDecoration(
-                                color: overlayColor,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Add a child",
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                        SizedBox(width: 10),
-                        ...List.generate(
-                          userDetails.details.children.length,
-                          (index) {
-                            Child child = userDetails.details.children[index];
-                            return Container(
-                              margin: EdgeInsets.only(right: 10),
-                              child: Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      pushTo(
-                                        context,
-                                        QuestionPage(child: child),
-                                      );
-                                    },
-                                    child: ChildImage(),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "${child.firstname} ${child.lastname.substring(0, 1)}.",
-                                    style: TextStyle(
-                                      color: Colors.white,
+                              SizedBox(height: 10),
+                              Text(
+                                "Add a child",
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                          SizedBox(width: 10),
+                          ...List.generate(
+                            userDetails.details.children.length,
+                            (index) {
+                              Child child = userDetails.details.children[index];
+                              return Container(
+                                margin: EdgeInsets.only(right: 10),
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        pushTo(
+                                          context,
+                                          KidDashboardPage(child: child),
+                                        );
+                                      },
+                                      child: ChildImage(),
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                                    SizedBox(height: 10),
+                                    Text(
+                                      "${child.firstname} ${child.lastname.substring(0, 1)}.",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

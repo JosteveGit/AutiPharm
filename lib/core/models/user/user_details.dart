@@ -6,8 +6,9 @@ class UserDetails {
 
   UserDetails.fromJson(Map<String, dynamic> json) {
     uid = json["uid"].toString();
-    details =
-        json['Details'] != null ? new Details.fromJson(Map.from(json['Details'])) : null;
+    details = json['Details'] != null
+        ? new Details.fromJson(Map.from(json['Details']))
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -71,15 +72,20 @@ class Child {
   String lastname;
   String levelOfUnderstanding;
   String id;
+  List<HistoryDetails> history = [];
 
-  Child(
-      {this.dob, this.firstname, this.lastname, this.levelOfUnderstanding});
+  Child({this.dob, this.firstname, this.lastname, this.levelOfUnderstanding});
 
   Child.fromJson(Map<String, dynamic> json) {
     dob = json['dob'];
     firstname = json['firstname'];
     lastname = json['lastname'];
     levelOfUnderstanding = json['levelOfUnderstanding'];
+    if (json["history"] != null) {
+      Map.from(json["history"]).forEach((k, v) {
+        history.add(new HistoryDetails.fromJson(Map.from(v)));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -90,5 +96,43 @@ class Child {
     data['levelOfUnderstanding'] = this.levelOfUnderstanding;
     return data;
   }
+
+  List<HistoryDetails> get shortHistory => history.take(5).toList();
+
+  List<HistoryDetails> get milestones {
+    List<HistoryDetails> milestones = [];
+    List<int> levels = [];
+    history.forEach((v) {
+      if(!levels.contains(v.level)){
+        levels.add(v.level);
+        milestones.add(v);
+      }
+    });
+    return milestones;
+  }
 }
 
+class HistoryDetails {
+  String difficulty;
+  int level;
+  String score;
+  String time;
+
+  HistoryDetails({this.difficulty, this.level, this.score, this.time});
+
+  HistoryDetails.fromJson(Map<String, dynamic> json) {
+    difficulty = json['difficulty'];
+    level = json['level'];
+    score = json['score'];
+    time = json['time'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['difficulty'] = this.difficulty;
+    data['level'] = this.level;
+    data['score'] = this.score;
+    data['time'] = this.time;
+    return data;
+  }
+}

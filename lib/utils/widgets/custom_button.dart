@@ -40,12 +40,13 @@ class CustomButton extends StatelessWidget {
         ),
         style: ButtonStyle(
           padding: MaterialStateProperty.all(
-            EdgeInsets.symmetric(horizontal: 30, vertical: 17),
+            padding ?? EdgeInsets.symmetric(horizontal: 30, vertical: 17),
           ),
           elevation: MaterialStateProperty.all(0.0),
           backgroundColor: (validator == null ? true : validator())
               ? MaterialStateProperty.all(color ?? buttonColor)
-              : MaterialStateProperty.all((color ?? buttonColor).withOpacity(0.5)),
+              : MaterialStateProperty.all(
+                  (color ?? buttonColor).withOpacity(0.5)),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(330),
@@ -56,4 +57,3 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
-
