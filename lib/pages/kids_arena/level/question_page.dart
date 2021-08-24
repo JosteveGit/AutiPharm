@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:auti_pharm/core/models/question_details.dart';
 import 'package:auti_pharm/core/models/user/user_details.dart';
+import 'package:auti_pharm/managers/sound_manager.dart';
 import 'package:auti_pharm/services/question/question_service.dart';
 import 'package:auti_pharm/utils/functions/dev_utils.dart';
 import 'package:auti_pharm/utils/functions/dialog_utils.dart';
@@ -12,6 +13,7 @@ import 'package:auti_pharm/utils/styles/color_utils.dart';
 import 'package:auti_pharm/utils/widgets/custom_button.dart';
 import 'package:auti_pharm/utils/widgets/pill.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class QuestionPage extends StatefulWidget {
   final Child child;
@@ -22,14 +24,41 @@ class QuestionPage extends StatefulWidget {
   _QuestionPageState createState() => _QuestionPageState();
 }
 
-class _QuestionPageState extends State<QuestionPage> {
+class _QuestionPageState extends State<QuestionPage>
+    with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
     type = widget.type;
     questions = generateQuestions(widget.type);
+    controllers = List.generate(
+      4,
+      (index) => AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 400),
+      ),
+    );
     countUpTimer();
+    countUpTimerOnAQuestion();
+    String level =
+        widget.child.levelOfUnderstanding.toLowerCase().substring(0, 1);
+    if (level == "a") {
+      isAverage = true;
+      getAverageType();
+    }
   }
+
+  bool isAverage = false;
+
+  void getAverageType() {
+    List<String> types = ["afternoon", "night", "sun"];
+    int random = Random().nextInt(types.length);
+    setState(() {
+      averageType = types[random];
+    });
+  }
+
+  String averageType = "";
 
   List<QuestionDetails> questions;
 
@@ -37,6 +66,7 @@ class _QuestionPageState extends State<QuestionPage> {
   Widget build(BuildContext context) {
     setStatusBarColor(color: BarColor.black);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.all(20),
@@ -48,7 +78,7 @@ class _QuestionPageState extends State<QuestionPage> {
                   Icon(Icons.lock_clock_rounded),
                   SizedBox(width: 10),
                   Text(
-                    "${zeroPrefixNumber(time.minute)}:${zeroPrefixNumber(time.second)}",
+                    "${zeroPrefixNumber(overallTime.minute)}:${zeroPrefixNumber(overallTime.second)}",
                     style: TextStyle(
                       fontFamily: "Bubblegum",
                       fontSize: 25,
@@ -87,19 +117,35 @@ class _QuestionPageState extends State<QuestionPage> {
                       Expanded(
                         child: Container(
                           width: double.maxFinite,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              questionDetails.answer.length,
-                              (index) {
-                                return Center(
-                                  child: Pill(
-                                    color: questionDetails.answer[index],
-                                    size: 100,
+                          child: Stack(
+                            children: [
+                              if (isAverage)
+                                Center(
+                                  child: SvgPicture.asset(
+                                    "assets/images/$averageType.svg",
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              Positioned(
+                                bottom: 20,
+                                top: isAverage ? null : 20,
+                                left: 20,
+                                right: 20,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                    questionDetails.answer.length,
+                                    (index) {
+                                      return Center(
+                                        child: Pill(
+                                          color: questionDetails.answer[index],
+                                          size: 80,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -118,21 +164,27 @@ class _QuestionPageState extends State<QuestionPage> {
                             children: [
                               Row(
                                 children: [
-                                  QuestionSelector(
+                                  OptionSelector(
                                     questions: questions,
                                     questionIndex: questionIndex,
                                     type: type,
                                     optionIndex: 0,
+                                    controller: controllers[0],
+                                    isAverage: isAverage,
+                                    averageType: averageType,
                                     onTap: () {
                                       onSelected(0);
                                     },
                                   ),
                                   Spacer(),
-                                  QuestionSelector(
+                                  OptionSelector(
                                     questions: questions,
                                     questionIndex: questionIndex,
                                     type: type,
                                     optionIndex: 1,
+                                    isAverage: isAverage,
+                                    averageType: averageType,
+                                    controller: controllers[1],
                                     onTap: () {
                                       onSelected(1);
                                     },
@@ -142,21 +194,27 @@ class _QuestionPageState extends State<QuestionPage> {
                               Spacer(),
                               Row(
                                 children: [
-                                  QuestionSelector(
+                                  OptionSelector(
                                     questions: questions,
                                     questionIndex: questionIndex,
                                     type: type,
                                     optionIndex: 2,
+                                    isAverage: isAverage,
+                                    averageType: averageType,
+                                    controller: controllers[2],
                                     onTap: () {
                                       onSelected(2);
                                     },
                                   ),
                                   Spacer(),
-                                  QuestionSelector(
+                                  OptionSelector(
                                     questions: questions,
                                     questionIndex: questionIndex,
                                     type: type,
                                     optionIndex: 3,
+                                    isAverage: isAverage,
+                                    averageType: averageType,
+                                    controller: controllers[3],
                                     onTap: () {
                                       onSelected(3);
                                     },
@@ -184,25 +242,31 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
+  List<AnimationController> controllers;
+
   int numberOfTrials = 0;
 
   void onSelected(int optionIndex) async {
     QuestionDetails questionDetails = questions[questionIndex];
     if (optionIndex == questionDetails.answerIndex) {
       int numberOfStars = 3 - numberOfTrials;
-      if (numberOfStars < 0) {
-        numberOfStars = 0;
+      if (numberOfStars <= 0) {
+        numberOfStars = 1;
       }
       if (questionIndex == 9) {
         timer.cancel();
       }
+      SoundManager.playCorrect();
+
       await showDialog(
         context: context,
         builder: (_) => CorrectDialog(numberOfStars: numberOfStars),
       );
-      if (questionIndex == 9) {
-        int allStars = numbersOfStars.reduce((a, b) => a + b);
 
+      if (questionIndex == 9) {
+        SoundManager.playLevelCompleted();
+        numbersOfStars.add(numberOfStars);
+        int allStars = numbersOfStars.reduce((a, b) => a + b);
         await showDialog(
           context: context,
           builder: (_) => CompletionDialog(
@@ -215,7 +279,7 @@ class _QuestionPageState extends State<QuestionPage> {
         await QuestionService.pushResult(
           child: widget.child,
           level: widget.type,
-          time: "${time.minute}min ${time.second}sec",
+          time: "${overallTime.minute}min ${overallTime.second}sec",
           score: "$allStars/30",
         );
         pop(context);
@@ -224,6 +288,8 @@ class _QuestionPageState extends State<QuestionPage> {
         moveToNext(numberOfStars);
       }
     } else {
+      print("play wronggg nau");
+      SoundManager.playWrong();
       numberOfTrials++;
     }
   }
@@ -233,15 +299,20 @@ class _QuestionPageState extends State<QuestionPage> {
   void moveToNext(int numberOfStars) {
     numbersOfStars.add(numberOfStars);
     numberOfTrials = 0;
+    if (isAverage) {
+      getAverageType();
+    }
     setState(() {
       questionIndex++;
     });
+    countUpTimerOnAQuestion();
   }
 
   Timer timer;
+  Timer timeOnAQuestionTimer;
 
   void countUpTimer() {
-    time = DateTime(0);
+    overallTime = DateTime(0);
     if (timer != null) {
       timer.cancel();
     }
@@ -250,7 +321,7 @@ class _QuestionPageState extends State<QuestionPage> {
       (timer) {
         if (mounted) {
           setState(() {
-            time = time.add(Duration(seconds: 1));
+            overallTime = overallTime.add(Duration(seconds: 1));
           });
         } else {
           timer.cancel();
@@ -259,7 +330,53 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
-  DateTime time = DateTime(0);
+  int get secondTime {
+    String level =
+        widget.child.levelOfUnderstanding.toLowerCase().substring(0, 1);
+    if (level == "l") {
+      return 30;
+    }
+    if (level == "a") {
+      return 45;
+    }
+    return 50;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controllers.forEach((element) {
+      element.dispose();
+    });
+  }
+
+  void countUpTimerOnAQuestion() {
+    timeOnAQuestion = DateTime(0);
+    if (timeOnAQuestionTimer != null) {
+      timeOnAQuestionTimer.cancel();
+    }
+    timeOnAQuestionTimer = Timer.periodic(
+      Duration(seconds: 1),
+      (a) async {
+        if (mounted) {
+          timeOnAQuestion = timeOnAQuestion.add(Duration(seconds: 1));
+          if (timeOnAQuestion.second >= secondTime) {
+            QuestionDetails questionDetails = questions[questionIndex];
+            await controllers[questionDetails.answerIndex].forward();
+            await controllers[questionDetails.answerIndex].reverse();
+
+            controllers[questionDetails.answerIndex].reset();
+            timeOnAQuestion = DateTime(0);
+          }
+        } else {
+          a.cancel();
+        }
+      },
+    );
+  }
+
+  DateTime overallTime = DateTime(0);
+  DateTime timeOnAQuestion = DateTime(0);
 
   int type;
   int questionIndex = 0;
@@ -466,13 +583,16 @@ class CompletionDialog extends StatelessWidget {
   }
 }
 
-class QuestionSelector extends StatelessWidget {
-  const QuestionSelector(
+class OptionSelector extends StatefulWidget {
+  const OptionSelector(
       {Key key,
       @required this.questions,
       @required this.questionIndex,
       @required this.type,
       @required this.optionIndex,
+      @required this.controller,
+      @required this.averageType,
+      @required this.isAverage,
       @required this.onTap})
       : super(key: key);
 
@@ -481,23 +601,74 @@ class QuestionSelector extends StatelessWidget {
   final int type;
   final int optionIndex;
   final VoidCallback onTap;
+  final AnimationController controller;
+  final String averageType;
+  final bool isAverage;
+
+  @override
+  _OptionSelectorState createState() => _OptionSelectorState();
+}
+
+class _OptionSelectorState extends State<OptionSelector>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    controller = widget.controller;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: List.generate(
-          questions[questionIndex].options[optionIndex].length,
-          (index) {
-            Color color = questions[questionIndex].options[optionIndex][index];
-            return Pill(
-              color: color,
-              size: 70.0 - (type * 10),
-            );
-          },
+      onTap: widget.onTap,
+      child: Container(
+        width: 130,
+        child: ScaleTransition(
+          scale: controller.drive(Tween(begin: 1, end: 1.5)
+            ..chain(CurveTween(curve: Curves.bounceIn))),
+          child: Stack(
+            overflow: Overflow.visible,
+            children: [
+              if (widget.isAverage)
+                Center(
+                  child: SvgPicture.asset(
+                    "assets/images/${widget.averageType}.svg",
+                    width: 85,
+                  ),
+                ),
+              Builder(builder: (context) {
+                Widget child = Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    widget.questions[widget.questionIndex]
+                        .options[widget.optionIndex].length,
+                    (index) {
+                      Color color = widget.questions[widget.questionIndex]
+                          .options[widget.optionIndex][index];
+                      return Pill(
+                        color: color,
+                        size: 70.0 - (widget.type * 10),
+                      );
+                    },
+                  ),
+                );
+                if (!widget.isAverage) {
+                  return child;
+                }
+    
+                return Positioned(
+                  bottom: -20,
+                  left: 1,
+                  right: 1,
+                  child: child,
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  AnimationController controller;
 }

@@ -31,7 +31,7 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hi, Josteve",
+                "Hi, ${widget.child.firstname}",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 45,
@@ -147,7 +147,7 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
               Spacer(),
               CustomButton(
                 expanded: true,
-                text: "Exit Josteve's Arena",
+                text: "Exit ${widget.child.firstname}'s Arena",
                 onPressed: () {
                   pop(context);
                 },

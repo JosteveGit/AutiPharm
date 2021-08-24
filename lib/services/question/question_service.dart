@@ -23,6 +23,7 @@ class QuestionService {
         "level": level,
         "score": score,
         "time": time,
+        "dateTime": DateTime.now().toString()
       },
     );
   }

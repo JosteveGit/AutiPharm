@@ -1,3 +1,5 @@
+import 'package:auti_pharm/core/constants.dart';
+
 class UserDetails {
   String uid;
   Details details;
@@ -86,6 +88,7 @@ class Child {
         history.add(new HistoryDetails.fromJson(Map.from(v)));
       });
     }
+    history.sort((a, b) => b.dateTime.compareTo(a.dateTime));
   }
 
   Map<String, dynamic> toJson() {
@@ -103,9 +106,12 @@ class Child {
     List<HistoryDetails> milestones = [];
     List<int> levels = [];
     history.forEach((v) {
-      if(!levels.contains(v.level)){
+      if (!levels.contains(v.level)) {
         levels.add(v.level);
-        milestones.add(v);
+        int mainScore = int.parse(v.score.split("/").first);
+        if (mainScore >= 15) {
+          milestones.add(v);
+        }
       }
     });
     return milestones;
@@ -117,6 +123,7 @@ class HistoryDetails {
   int level;
   String score;
   String time;
+  String dateTime;
 
   HistoryDetails({this.difficulty, this.level, this.score, this.time});
 
@@ -125,6 +132,7 @@ class HistoryDetails {
     level = json['level'];
     score = json['score'];
     time = json['time'];
+    dateTime = json['dateTime'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -133,6 +141,7 @@ class HistoryDetails {
     data['level'] = this.level;
     data['score'] = this.score;
     data['time'] = this.time;
+    data['dateTime'] = this.dateTime;
     return data;
   }
 }

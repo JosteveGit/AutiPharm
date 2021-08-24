@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "968711974841",
+    "firebase_url": "https://autipharm-default-rtdb.firebaseio.com",
+    "project_id": "autipharm",
+    "storage_bucket": "autipharm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968711974841:android:691a19eb8c1e2c450c9068",
+        "android_client_info": {
+          "package_name": "com.example.auti_pharm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968711974841-rec5vip779genskd0jodma1feae6516g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANn5_eHsIRS8I1qTUsGp6rvBCsWMJhZtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968711974841-rec5vip779genskd0jodma1feae6516g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

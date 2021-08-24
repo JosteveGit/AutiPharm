@@ -35,6 +35,8 @@ dependencies:
   firebase_auth: ^0.16.1
   firebase_database: ^3.1.6
   simpleprogressdialog: ^1.0.8
+  assets_audio_player: any
+
 
 
 
@@ -56,6 +58,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svgs/
+    - assets/sounds/
 
 
   fonts:

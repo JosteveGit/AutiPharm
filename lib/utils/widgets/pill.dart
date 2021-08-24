@@ -9,13 +9,17 @@ class Pill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size ?? 33,
-      height: size ?? 33,
-      child: FittedBox(
-        child: SvgPicture.asset(
-          svgPath("pill"),
-          color: color,
+    return Material(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(360)),
+      child: Container(
+        width: size ?? 33,
+        height: size ?? 33,
+        child: FittedBox(
+          child: SvgPicture.asset(
+            svgPath("pill"),
+            color: color,
+          ),
         ),
       ),
     );
