@@ -102,7 +102,7 @@ class _QuestionPageState extends State<QuestionPage>
               ),
               SizedBox(height: 33),
               Text(
-                "Identify your drug?",
+                "Identify the colour",
                 style: TextStyle(
                   fontFamily: "Bubblegum",
                   fontSize: 35,
@@ -493,7 +493,7 @@ class CompletionDialog extends StatelessWidget {
           children: [
             SizedBox(height: 20),
             Text(
-              "Level\nCompleted",
+              allStars < 15 ? "Level\nFailed" : "Level\nCompleted",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
@@ -502,15 +502,16 @@ class CompletionDialog extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Text(
-              "You’ve earned a milestone badge",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w200,
-                fontFamily: 'AirbnbCereal',
+            if (allStars > 15)
+              Text(
+                "You’ve earned a milestone badge",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w200,
+                  fontFamily: 'AirbnbCereal',
+                ),
               ),
-            ),
             SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -532,7 +533,7 @@ class CompletionDialog extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12),
-            Container(
+            if (allStars > 15) Container(
               padding: EdgeInsets.all(3),
               child: Container(
                 padding: EdgeInsets.all(40),
@@ -655,7 +656,7 @@ class _OptionSelectorState extends State<OptionSelector>
                 if (!widget.isAverage) {
                   return child;
                 }
-    
+
                 return Positioned(
                   bottom: -20,
                   left: 1,

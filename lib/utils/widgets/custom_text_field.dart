@@ -20,6 +20,8 @@ class CustomTextField extends StatefulWidget {
   final TextInputAction textInputAction;
   final Border border;
   final Color backgroundColor;
+  final Color textColor;
+  final Color headerColor;
 
   const CustomTextField({
     Key key,
@@ -36,7 +38,9 @@ class CustomTextField extends StatefulWidget {
     this.inputFormatters,
     this.focusNode,
     this.suffix,
+    this.textColor,
     this.onSubmitted,
+    this.headerColor,
     this.textInputAction = TextInputAction.done,
     this.border,
     this.backgroundColor,
@@ -70,7 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 child: Text(
                   "${widget.header}",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: widget.headerColor ?? Colors.white,
                     fontWeight: FontWeight.w400,
                     fontSize: 13,
                   ),
@@ -100,14 +104,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
                             widget.obscureText ? 1 : (widget.lines ?? null),
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.white
+                          color:  widget.textColor ?? Colors.white,
                         ),
                         decoration: InputDecoration.collapsed(
                           hintText: widget.hint ?? "",
                           hintStyle: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 13,
-                              color: Colors.white.withOpacity(0.7)),
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13,
+                            color: widget.textColor ??
+                                Colors.white.withOpacity(0.7),
+                          ),
                         ),
                       ),
                     ),
@@ -117,9 +123,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
               decoration: BoxDecoration(
-                color: overlayColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
+                  color: widget.backgroundColor ?? overlayColor,
+                  borderRadius: BorderRadius.circular(30),
+                  border: widget.border),
             ),
           ],
         ),

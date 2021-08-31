@@ -129,17 +129,9 @@ class _RegisterGuardianPageState extends State<RegisterGuardianPage> {
       relationship.isNotEmpty;
 
   List<String> relationshipOptions = [
-    "Mother",
-    "Father",
+    "Parents",
+    "Sibling",
+    "Medical Professional",
     "Guardian",
-    "Nurse",
-    "Uncle",
-    "Aunt",
-    "Sister",
-    "Brother",
-    "Grandmother",
-    "Grandfather",
-    "Cousin",
-    "Doctor"
   ];
 }

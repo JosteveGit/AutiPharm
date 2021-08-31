@@ -6,6 +6,7 @@ import 'package:auti_pharm/utils/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import 'childs_history_page.dart';
+import 'edit_childs_page.dart';
 
 class ViewChildPage extends StatefulWidget {
   final Child child;
@@ -45,7 +46,9 @@ class _ViewChildPageState extends State<ViewChildPage> {
                       SizedBox(height: 10),
                       CustomButton(
                         text: "Edit profile",
-                        onPressed: () {},
+                        onPressed: () {
+                          pushTo(context, EditChildsPage(child: widget.child,));
+                        },
                       ),
                     ],
                   ),

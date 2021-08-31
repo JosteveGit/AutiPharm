@@ -35,6 +35,9 @@ class Details {
   String name;
   String relationshipWithChild;
 
+  String get firstName => name.split(" ").first;
+  String get lastName => name.split(" ").last;
+
   Details(
       {this.arenaPin,
       this.children,

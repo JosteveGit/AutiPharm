@@ -3,6 +3,7 @@ import 'package:auti_pharm/utils/functions/dev_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
 import 'package:auti_pharm/utils/widgets/custom_button.dart';
+import 'package:auti_pharm/utils/widgets/pill.dart';
 import 'package:flutter/material.dart';
 
 import 'level/question_page.dart';
@@ -54,7 +55,18 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                       padding: EdgeInsets.all(20),
                       child: Column(
                         children: [
-                          Expanded(child: Container()),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Pill(
+                                    size: 150,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           Text(
                             "Level 1",
                             style: TextStyle(
@@ -85,7 +97,26 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                       padding: EdgeInsets.all(20),
                       child: Column(
                         children: [
-                          Expanded(child: Container()),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Pill(
+                                      size: 80,
+                                    ),
+                                    SizedBox(width: 20),
+                                    Pill(
+                                      size: 80,
+                                      color: Colors.blue,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                           Text(
                             "Level 2",
                             style: TextStyle(
@@ -96,12 +127,22 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                           ),
                           SizedBox(height: 5),
                           CustomButton(
-                            text: "Locked",
+                            text: widget.child.milestones
+                                        .where((element) => element.level == 1)
+                                        .length ==
+                                    0
+                                ? "Locked"
+                                : "Start",
                             onPressed: () {
-                              pushTo(
-                                context,
-                                QuestionPage(child: widget.child, type: 2),
-                              );
+                              if (widget.child.milestones
+                                      .where((element) => element.level == 1)
+                                      .length !=
+                                  0) {
+                                pushTo(
+                                  context,
+                                  QuestionPage(child: widget.child, type: 2),
+                                );
+                              }
                             },
                           ),
                         ],
@@ -115,7 +156,38 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                       padding: EdgeInsets.all(20),
                       child: Column(
                         children: [
-                          Expanded(child: Container()),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Wrap(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Pill(
+                                          size: 80,
+                                        ),
+                                        SizedBox(width: 20),
+                                        Pill(
+                                          size: 80,
+                                          color: Colors.blue,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 20),
+                                    Center(
+                                      child: Pill(
+                                        size: 80,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                           Text(
                             "Level 3",
                             style: TextStyle(
@@ -126,12 +198,22 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                           ),
                           SizedBox(height: 5),
                           CustomButton(
-                            text: "Locked",
+                            text: widget.child.milestones
+                                        .where((element) => element.level == 2)
+                                        .length ==
+                                    0
+                                ? "Locked"
+                                : "Start",
                             onPressed: () {
-                              pushTo(
-                                context,
-                                QuestionPage(child: widget.child, type: 3),
-                              );
+                              if (widget.child.milestones
+                                      .where((element) => element.level == 2)
+                                      .length !=
+                                  0) {
+                                pushTo(
+                                  context,
+                                  QuestionPage(child: widget.child, type: 2),
+                                );
+                              }
                             },
                           ),
                         ],

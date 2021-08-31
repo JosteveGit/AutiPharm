@@ -48,39 +48,15 @@ class _KidsArenaDashboardPageState extends State<KidsArenaDashboardPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Wrap(
                         children: [
-                          Column(
-                            children: [
-                              Container(
-                                height: 105,
-                                width: 107,
-                                child: Icon(
-                                  Icons.add_rounded,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: overlayColor,
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                "Add a child",
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
-                          ),
-                          SizedBox(width: 10),
+                          
                           ...List.generate(
                             userDetails.details.children.length,
                             (index) {
                               Child child = userDetails.details.children[index];
                               return Container(
-                                margin: EdgeInsets.only(right: 10),
+                                margin: EdgeInsets.only(right: 10, bottom: 10),
                                 child: Column(
                                   children: [
                                     GestureDetector(

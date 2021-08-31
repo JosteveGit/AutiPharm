@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     CustomTextField(
                       header: "Email Address",
-                      onChanged: (v){
+                      onChanged: (v) {
                         setState(() {
                           email = v;
                         });
@@ -54,11 +54,30 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 20),
                     CustomTextField(
                       header: "Password",
-                      onChanged: (v){
+                      onChanged: (v) {
                         setState(() {
                           password = v;
                         });
                       },
+                      obscureText: hidePassword,
+                      suffix: Container(
+                        height: 30,
+                        child: FittedBox(
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            icon: Icon(
+                              hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility_rounded,
+                                  color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -68,7 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 20),
                     CustomButton(
                       text: "Sign In",
-                      validator: () => isValidEmailAddress(email) && password.isNotEmpty,
+                      validator: () =>
+                          isValidEmailAddress(email) && password.isNotEmpty,
                       onPressed: () {
                         login();
                         // pushTo(context, GuardiansDashboardPage());
@@ -99,6 +119,8 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  bool hidePassword = true;
 
   String email = "";
   String password = "";

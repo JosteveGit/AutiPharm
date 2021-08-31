@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'add_child_page.dart';
+import 'guardians_profile_page.dart';
+import 'settings_page.dart';
 import 'view_child_page.dart';
 
 class GuardiansDashboardPage extends StatefulWidget {
@@ -134,10 +136,16 @@ class _GuardiansDashboardPageState extends State<GuardiansDashboardPage> {
                             DashboardOption(
                               iconData: Icons.person_rounded,
                               text: "Profile",
+                              onTap: (){
+                                pushTo(context, GuardiansProfilePage());
+                              },
                             ),
                             DashboardOption(
                               iconData: Icons.settings_rounded,
                               text: "Settings",
+                              onTap: (){
+                                pushTo(context, SettingsPage());
+                              },
                             ),
                           ],
                         ),
@@ -193,34 +201,42 @@ class _GuardiansDashboardPageState extends State<GuardiansDashboardPage> {
 class DashboardOption extends StatelessWidget {
   final IconData iconData;
   final String text;
+  final VoidCallback onTap;
   const DashboardOption({
     Key key,
     this.iconData,
     this.text,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(
-              iconData,
-              color: Colors.white,
-            ),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          color: Colors.white,
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Icon(
+                  iconData,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 26),
+              Text(
+                "$text",
+              )
+            ],
           ),
-          SizedBox(width: 26),
-          Text(
-            "$text",
-          )
-        ],
+        ),
       ),
     );
   }

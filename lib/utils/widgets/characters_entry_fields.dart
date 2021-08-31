@@ -63,6 +63,7 @@ class _CharactersEntryFieldsState extends State<CharactersEntryFields> {
                     child: Center(
                       child: TextField(
                         cursorColor: buttonColor,
+                        obscureText: true,
                         textAlign: TextAlign.center,
                         focusNode: nodes[index],
                         controller: controllers[index],

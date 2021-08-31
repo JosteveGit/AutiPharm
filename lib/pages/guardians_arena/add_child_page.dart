@@ -78,13 +78,15 @@ class _AddChildPageState extends State<AddChildPage> {
                       Expanded(
                         child: CustomTextField(
                           headerLess: true,
-                          hint: "Day",
+                          hint: "DD",
+                          keyboardType: TextInputType.number,
                           onChanged: (v) {
                             setState(() {
                               day = v;
                             });
                           },
                           inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(2),
                           ],
                         ),
@@ -93,13 +95,15 @@ class _AddChildPageState extends State<AddChildPage> {
                       Expanded(
                         child: CustomTextField(
                           headerLess: true,
-                          hint: "Month",
+                          hint: "MM",
+                          keyboardType: TextInputType.number,
                           onChanged: (v) {
                             setState(() {
                               month = v;
                             });
                           },
                           inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(2),
                           ],
                         ),
@@ -108,13 +112,15 @@ class _AddChildPageState extends State<AddChildPage> {
                       Expanded(
                         child: CustomTextField(
                           headerLess: true,
-                          hint: "Year",
+                          hint: "YYYY",
+                          keyboardType: TextInputType.number,
                           onChanged: (v) {
                             setState(() {
                               year = v;
                             });
                           },
                           inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(4),
                           ],
                         ),
@@ -136,7 +142,7 @@ class _AddChildPageState extends State<AddChildPage> {
                     SizedBox(height: 20),
                     CustomButton(
                       text: "Next",
-                      onPressed: () async{
+                      onPressed: () async {
                         ChildDetails childDetails = ChildDetails(
                           dob: childDOB,
                           firstname: childsFirstName,

@@ -23,6 +23,10 @@ class CustomDropDown<T> extends StatefulWidget {
   final CustomDropDownItem intialValue;
   final double maxHeight;
   final bool defaultEmpty;
+  final Color headerColor;
+  final Border border;
+  final Color backgroundColor;
+  final Color textColor;
 
   const CustomDropDown({
     @required this.items,
@@ -30,8 +34,12 @@ class CustomDropDown<T> extends StatefulWidget {
     @required this.header,
     @required this.intialValue,
     this.maxHeight,
+    this.headerColor,
+    this.border,
     this.defaultEmpty = false,
     this.suffix,
+    this.backgroundColor,
+    this.textColor,
   });
 
   @override
@@ -83,7 +91,7 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>>
               child: Text(
                 "${widget.header}",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: widget.headerColor ?? Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 13,
                 ),
@@ -98,9 +106,9 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>>
               curve: Curves.fastOutSlowIn,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               decoration: BoxDecoration(
-                color: overlayColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
+                  color: widget.backgroundColor ?? overlayColor,
+                  borderRadius: BorderRadius.circular(30),
+                  border: widget.border),
               child: ListView(
                 padding: EdgeInsets.zero,
                 controller: controller,
@@ -119,7 +127,7 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>>
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: widget.textColor ?? Colors.white,
                             fontSize: 13,
                           ),
                         ),
@@ -129,7 +137,7 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>>
                             quarterTurns: expanded ? 2 : 0,
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Colors.white,
+                              color: widget.textColor ?? Colors.white,
                               size: 18,
                             ),
                           )
@@ -170,7 +178,7 @@ class _CustomDropDownState<T> extends State<CustomDropDown<T>>
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: widget.textColor ?? Colors.white,
                                   fontSize: 13,
                                 ),
                               ),

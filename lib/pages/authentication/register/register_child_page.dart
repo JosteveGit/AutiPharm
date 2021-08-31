@@ -78,13 +78,15 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
                       Expanded(
                         child: CustomTextField(
                           headerLess: true,
-                          hint: "Day",
+                          hint: "DD",
                           onChanged: (v) {
                             setState(() {
                               day = v;
                             });
                           },
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(2),
                           ],
                         ),
@@ -93,13 +95,15 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
                       Expanded(
                         child: CustomTextField(
                           headerLess: true,
-                          hint: "Month",
+                          hint: "MM",
                           onChanged: (v) {
                             setState(() {
                               month = v;
                             });
                           },
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(2),
                           ],
                         ),
@@ -108,13 +112,15 @@ class _RegisterChildPageState extends State<RegisterChildPage> {
                       Expanded(
                         child: CustomTextField(
                           headerLess: true,
-                          hint: "Year",
+                          hint: "YYYY",
                           onChanged: (v) {
                             setState(() {
                               year = v;
                             });
                           },
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(4),
                           ],
                         ),

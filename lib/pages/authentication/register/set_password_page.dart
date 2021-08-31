@@ -54,8 +54,35 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                           password = v;
                         });
                       },
+                      obscureText: hidePassword,
+                      suffix: Container(
+                        height: 30,
+                        child: FittedBox(
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            icon: Icon(
+                              hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
+                    Text(
+                      "Password must contain an uppercase letter, a lowercase letter, a number, a symbol and must be at least of length",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                      ),
+                    ),
+                    SizedBox(height: 30),
                     CustomTextField(
                       header: "Confirm password",
                       onChanged: (v) {
@@ -63,6 +90,25 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
                           confirmPassword = v;
                         });
                       },
+                      obscureText: confirmHidePassword,
+                      suffix: Container(
+                        height: 30,
+                        child: FittedBox(
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                confirmHidePassword = !confirmHidePassword;
+                              });
+                            },
+                            icon: Icon(
+                              confirmHidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility_rounded,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     CustomButton(
@@ -91,6 +137,9 @@ class _SetPasswordPageState extends State<SetPasswordPage> {
       ),
     );
   }
+
+  bool hidePassword = true;
+  bool confirmHidePassword = true;
 
   String password = "";
   String confirmPassword = "";
