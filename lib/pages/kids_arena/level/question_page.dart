@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:auti_pharm/core/constants.dart';
 import 'package:auti_pharm/core/models/question_details.dart';
 import 'package:auti_pharm/core/models/user/user_details.dart';
 import 'package:auti_pharm/managers/sound_manager.dart';
@@ -87,7 +88,19 @@ class _QuestionPageState extends State<QuestionPage>
                   Spacer(),
                   GestureDetector(
                     onTap: () {
-                      pop(context);
+                      showEnterAreanPinDialog(
+                        context,
+                        operation: "",
+                        onPinEntered: (v) {
+                          print(userDetails.details.arenaPin);
+                          if (v == userDetails.details.arenaPin) {
+                            pop(context);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Invalid Pin")));
+                          }
+                        },
+                      );
                     },
                     child: Text(
                       "Cancel",
@@ -533,39 +546,40 @@ class CompletionDialog extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12),
-            if (allStars > 15) Container(
-              padding: EdgeInsets.all(3),
-              child: Container(
-                padding: EdgeInsets.all(40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.star_rounded, color: Colors.white),
-                    SizedBox(width: 4),
-                    Text(
-                      "$type${child.levelOfUnderstanding.substring(0, 1).toUpperCase()}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'AirbnbCereal',
-                        fontSize: 30,
+            if (allStars > 15)
+              Container(
+                padding: EdgeInsets.all(3),
+                child: Container(
+                  padding: EdgeInsets.all(40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.star_rounded, color: Colors.white),
+                      SizedBox(width: 4),
+                      Text(
+                        "$type${child.levelOfUnderstanding.substring(0, 1).toUpperCase()}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'AirbnbCereal',
+                          fontSize: 30,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 4),
-                    Icon(Icons.star_rounded, color: Colors.white),
-                  ],
+                      SizedBox(width: 4),
+                      Icon(Icons.star_rounded, color: Colors.white),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: backgroundColor, width: 2),
+                    color: overlayColor,
+                    shape: BoxShape.circle,
+                  ),
                 ),
                 decoration: BoxDecoration(
-                  border: Border.all(color: backgroundColor, width: 2),
                   color: overlayColor,
                   shape: BoxShape.circle,
                 ),
               ),
-              decoration: BoxDecoration(
-                color: overlayColor,
-                shape: BoxShape.circle,
-              ),
-            ),
             SizedBox(height: 20),
             CustomButton(
               text: "Next",

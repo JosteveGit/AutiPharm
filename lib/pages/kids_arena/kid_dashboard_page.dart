@@ -211,7 +211,7 @@ class _KidDashboardPageState extends State<KidDashboardPage> {
                                   0) {
                                 pushTo(
                                   context,
-                                  QuestionPage(child: widget.child, type: 2),
+                                  QuestionPage(child: widget.child, type: 3),
                                 );
                               }
                             },

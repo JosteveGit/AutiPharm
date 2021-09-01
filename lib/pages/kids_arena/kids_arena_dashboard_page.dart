@@ -3,6 +3,7 @@ import 'package:auti_pharm/core/models/user/user_details.dart';
 import 'package:auti_pharm/pages/guardians_arena/view_child_page.dart';
 import 'package:auti_pharm/pages/kids_arena/level/question_page.dart';
 import 'package:auti_pharm/utils/functions/dev_utils.dart';
+import 'package:auti_pharm/utils/functions/dialog_utils.dart';
 import 'package:auti_pharm/utils/navigation/navigator.dart';
 import 'package:auti_pharm/utils/styles/color_utils.dart';
 import 'package:auti_pharm/utils/widgets/child_image.dart';
@@ -50,7 +51,6 @@ class _KidsArenaDashboardPageState extends State<KidsArenaDashboardPage> {
                     SingleChildScrollView(
                       child: Wrap(
                         children: [
-                          
                           ...List.generate(
                             userDetails.details.children.length,
                             (index) {
@@ -89,8 +89,20 @@ class _KidsArenaDashboardPageState extends State<KidsArenaDashboardPage> {
               CustomButton(
                 expanded: true,
                 text: "Exit Arena",
-                onPressed: () {
-                  pop(context);
+                onPressed: () async {
+                  showEnterAreanPinDialog(
+                    context,
+                    operation: "exit arena",
+                    onPinEntered: (v) {
+                      print(userDetails.details.arenaPin);
+                      if(v == userDetails.details.arenaPin){
+                        pop(context);
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid Pin")));
+                      }
+                    },
+                  );
+                  // pop(context);
                 },
               ),
             ],

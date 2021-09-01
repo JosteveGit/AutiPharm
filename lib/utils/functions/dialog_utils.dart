@@ -1,3 +1,4 @@
+import 'package:auti_pharm/utils/widgets/enter_arena_pin_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:simpleprogressdialog/builders/material_dialog_builder.dart';
 import 'package:simpleprogressdialog/simpleprogressdialog.dart';
@@ -13,4 +14,14 @@ void showLoader(BuildContext context) {
 
 void popLoader() {
   _progressDialog.dismiss();
+}
+
+Future<void> showEnterAreanPinDialog(BuildContext context, {String operation, Function(String pin) onPinEntered}) async {
+  String pin = await showDialog(
+    context: context,
+    builder: (_) => EnterArenaPinDialog(operation: operation,),
+  );
+  if(pin != null){
+    onPinEntered(pin);
+  }
 }

@@ -33,7 +33,7 @@ class _SetArenaPinPageState extends State<SetArenaPinPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Set Area Pin",
+                "Set Arena Pin",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
